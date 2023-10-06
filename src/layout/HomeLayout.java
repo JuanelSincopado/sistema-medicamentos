@@ -1,32 +1,43 @@
 package layout;
 
+import static utils.Colors.green_dark;
+
+import java.util.Arrays;
+import java.util.List;
+
+import controller.product.ProductController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import model.User;
+import model.Product;
 import state.GlobalState;
 import utils.Colors;
+import utils.Components;
+import view.HomeFX;
 import view.LoginFX;
-
-import java.util.Objects;
-
-import static utils.Colors.green_dark;
 
 public class HomeLayout {
 
     static GlobalState globalState = GlobalState.getInstance();
 
     public static Node navbar() {
+        GlobalState globalState = GlobalState.getInstance();
+
         StackPane nameSistem = new StackPane();
         nameSistem.setStyle("-fx-background-color: " + green_dark + ";");
         nameSistem.setPrefHeight(70);
@@ -62,12 +73,24 @@ public class HomeLayout {
     }
 
     public static Node sideBar(Stage stage) {
+        GlobalState globalState = GlobalState.getInstance();
+
         VBox sideBar = new VBox();
 
-        Button buttonHome = createIconButtonWithText("Inicio", "/image/icons/casa.png");
-        Button buttonProduct = createIconButtonWithText("Medicinas", "/image/icons/capsula.png");
-        Button buttonUser = createIconButtonWithText("Usuarios", "/image/icons/usuario.png");
-        Button buttonlogOut = createIconButtonWithText("Cerrar sesión", "/image/icons/cerrar-sesion.png");
+        Button buttonHome = Components.createIconButtonWithText("Inicio", "/image/icons/casa.png");
+        Button buttonProduct = Components.createIconButtonWithText("Medicinas", "/image/icons/capsula.png");
+        Button buttonUser = Components.createIconButtonWithText("Usuarios", "/image/icons/usuario.png");
+        Button buttonlogOut = Components.createIconButtonWithText("Cerrar sesión", "/image/icons/cerrar-sesion.png");
+
+        buttonHome.setOnAction(e -> {
+            globalState.setPage("home");
+            HomeFX.home();
+        });
+
+        buttonProduct.setOnAction(e -> {
+            globalState.setPage("product");
+            HomeFX.home();
+        });
 
         buttonlogOut.setOnAction(e -> {
             LoginFX.login();
@@ -94,33 +117,20 @@ public class HomeLayout {
         return sideBar;
     }
 
-    private static Button createIconButtonWithText(String title, String iconFileName) {
-        // Cargar la imagen del icono
-        Image icon = new Image(Objects.requireNonNull(HomeLayout.class.getResourceAsStream(iconFileName)));
+    public static Node containerBody() {
 
-        // Crear un ImageView para mostrar el icono
-        ImageView iconView = new ImageView(icon);
-        iconView.setFitHeight(22);
-        iconView.setFitWidth(22);
+        System.out.println(globalState.getPageValue());
 
-        // Crear un Label para el texto
-        Label label = new Label(title);
-        label.setTextFill(Paint.valueOf(Colors.side_color));
-        label.setFont(new Font(16));
+        HBox containerHome = new HBox();
+        containerHome.setPadding(new Insets(20, 40, 20, 40));
+        HBox.setHgrow(containerHome, Priority.ALWAYS);
+        containerHome.setSpacing(150);
+        containerHome.setAlignment(Pos.CENTER);
 
-        // Crear un contenedor HBox para colocar el icono y el texto horizontalmente
-        HBox hbox = new HBox(15); // Espacio entre el icono y el texto
-        hbox.setAlignment(Pos.CENTER_LEFT);
-        hbox.getChildren().addAll(iconView, label);
+        containerHome.getChildren().addAll(Components.tableContainerBody(), Components.tableContainerBody(),
+                Components.tableContainerBody());
 
-        // Crear un botón y establecer el HBox como su contenido gráfico
-        Button button = new Button();
-        button.setGraphic(hbox);
-
-        button.setStyle("-fx-background-color: transparent; -fx-font-weight: bold; -fx-cursor: hand");
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(20);
-
-        return button;
+        return containerHome;
     }
+
 }

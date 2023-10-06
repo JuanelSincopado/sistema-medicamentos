@@ -21,8 +21,6 @@ public class MainJavaFX extends Application {
         if (userList.isEmpty()) {
             LoginFX.register();
         } else {
-            new LoginFX();
-            // new HomeFX().home();
             LoginFX.login();
         }
     }

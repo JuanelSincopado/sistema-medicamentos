@@ -24,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import model.User;
 import state.GlobalState;
 import utils.CircularProgressBar;
 import view.HomeFX;
@@ -85,7 +84,7 @@ public class LoginLayout {
         submit.setOnAction(e -> {
             LoginController.loginUser(txtUserName.getText(), txtPass.getText());
             if (globalState.getUser().getUser() != null) {
-                new HomeFX().home();
+                HomeFX.home();
                 stage.close();
             }
         });

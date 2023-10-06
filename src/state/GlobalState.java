@@ -11,6 +11,7 @@ public class GlobalState {
   private User user;
 
   private GlobalState() {
+    this.page.set("home");
   }
 
   public static GlobalState getInstance() {

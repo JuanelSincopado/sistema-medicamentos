@@ -14,8 +14,6 @@ import static utils.Utils.hash;
 public class UserController {
     static Connection connection = conn();
 
-
-
     static public List<User> getAllUsers(){
         List<User> userList = new ArrayList<>();
 

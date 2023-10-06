@@ -9,29 +9,30 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.User;
+import layout.HomeLayout;
 import state.GlobalState;
 import utils.CircularProgressBar;
 
 public class HomeFX {
-
-    static GlobalState globalState = GlobalState.getInstance();
     CircularProgressBar circularProgressBar = new CircularProgressBar();
+    static GlobalState globalState = GlobalState.getInstance();
 
-    public void home() {
+    public static void home() {
 
         Stage stage = new Stage();
 
         VBox root = new VBox();
 
-        globalState.setPage("home");
-
-        Label title = new Label("Home");
-
         HBox body = new HBox();
         VBox.setVgrow(body, Priority.ALWAYS);
 
-        body.getChildren().addAll(sideBar(stage), title);
+        Label prueba = new Label("Prueba");
+
+        if (globalState.getPageValue() == "home") {
+            body.getChildren().addAll(sideBar(stage), HomeLayout.containerBody());
+        } else if (globalState.getPageValue() == "products") {
+            body.getChildren().addAll(sideBar(stage), prueba);
+        }
 
         root.getChildren().addAll(navbar(), body);
 
@@ -41,5 +42,4 @@ public class HomeFX {
         stage.setScene(scene);
         stage.show();
     }
-
 }
